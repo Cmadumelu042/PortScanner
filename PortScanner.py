@@ -1,24 +1,33 @@
 import socket
+import re
+
 
 s= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(10)
+def is_valid_ip(ip): #checking for validity of IP address input
+    pattern = re.compile(r'^(\d{1,3}\.){3}\d{1,3}$')
+    if pattern.match(ip):
+        return all(0 <= int(part) <= 255 for part in ip.split('.'))
+    return False
 
-host=input('please enter the ip address you want to scan: ').isdecimal
-while not host.isdecimal():
-        host= input('please enter a valid ip address: ')
-        print(' you have entered a valid ip address', host)
+
+Host=input('please enter the ip address you want to scan: ')
+while not is_valid_ip(Host):
+    Host= input('please enter a valid ip address: ')
+print(' you have entered a valid ip address which is: ', host)
         
-port=int(input('please enter the port number you want to scan: '))
+port=input('please enter the port number you want to scan: ')
 while not port.isdigit():
         port=int('please enter a valid port number: ')
-        print('you have entered a valid port number: ', port)
+port=int(port)
+print('you have entered a valid port number: ', port)
 
 
 
 def portscanner(port):
     if s.connect_ex((host,port)):
-        print('port is close')
+        print('This port is closed unfortunately')
     else:
-        print('port is open')
+        print('This port is open')
 
 portscanner(port)
